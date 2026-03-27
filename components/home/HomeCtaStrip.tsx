@@ -3,10 +3,10 @@ import { ArrowRight, Handshake } from "lucide-react";
 
 export default function HomeCtaStrip() {
   return (
-    <section className="pt-8 sm:pt-12">
-      <div className="mx-auto max-w-6xl px-3 sm:px-4 lg:px-6">
+    <section className="pt-8 sm:pt-12 border-b border-[#e2d9cc]">
+      <div>
         <div className="border border-[#e8925f] bg-[#f78a4f] px-5 py-8 sm:px-8 sm:py-10">
-          <div className="flex flex-col gap-24">
+          <div className="mx-auto max-w-6xl px-3 sm:px-4 lg:px-6 flex flex-col gap-24">
             <span
               aria-hidden="true"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/12 text-[#fff6ea]"

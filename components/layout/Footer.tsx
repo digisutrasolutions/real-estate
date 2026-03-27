@@ -19,7 +19,7 @@ const resources = [
 
 export default function Footer() {
   return (
-    <footer className="relative isolate mt-16 overflow-hidden bg-gradient-to-b from-[#2f2016] via-[#876548] to-[#b9936f] text-[#f8efe5]">
+    <footer className="relative isolate overflow-hidden bg-gradient-to-b from-[#2f2016] via-[#876548] to-[#b9936f] text-[#f8efe5]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(248,213,176,0.24),transparent_45%),radial-gradient(circle_at_85%_85%,rgba(70,42,24,0.32),transparent_40%)]"
