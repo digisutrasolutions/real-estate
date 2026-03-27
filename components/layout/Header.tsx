@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import { Menu } from "lucide-react";
 
 const navigation = [
   { label: "Buy", href: "/buy" },
@@ -12,20 +13,24 @@ const navigation = [
 export default function Header() {
   return (
     <>
-      <div className="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-slate-100">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:text-sm">
+      <div className="relative isolate w-full overflow-hidden bg-gradient-to-r from-[#2c1d14] via-[#7f5d43] to-[#b58c68] text-[#f9eee2]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_35%,rgba(248,213,176,0.2),transparent_42%),radial-gradient(circle_at_88%_50%,rgba(57,34,20,0.24),transparent_45%)]"
+        />
+        <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:text-sm">
           <div className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#f66b05]" />
               Trusted real estate advisors in India
             </span>
-            <span className="hidden h-4 w-px bg-slate-700 sm:inline-block" />
+            <span className="hidden h-4 w-px bg-white/20 sm:inline-block" />
             <span className="hidden sm:inline">Call +91 9876543210</span>
             <span className="hidden sm:inline">hello@realsutra.com</span>
           </div>
           <Link
             href="/consultation"
-            className="rounded-full border border-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white transition hover:border-[#f66b05] hover:text-[#f66b05]"
+            className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#fff4e8] transition hover:border-[#f66b05] hover:text-[#ffd6b5]"
           >
             Schedule a tour
           </Link>
@@ -74,7 +79,9 @@ export default function Header() {
 
           <details className="relative md:hidden">
             <summary className="list-none rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700">
-              Menu
+              <span className="flex items-center justify-center" aria-label="Open menu">
+                <Menu className="h-4 w-4" />
+              </span>
             </summary>
             <div className="absolute right-0 mt-3 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-lg">
               <div className="grid gap-3 text-sm font-medium text-slate-700">

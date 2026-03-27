@@ -92,8 +92,11 @@ export default function Hero() {
         <div>
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div className="max-w-[42rem]">
-              <h1 className="font-display max-w-[11ch] text-[2.35rem] leading-[0.92] font-semibold tracking-[-0.04em] text-[#1d1d1b] sm:text-[3.2rem] lg:text-[4.35rem]">
-                Step Into a World of Premium Real Estate
+              <h1 className="font-display max-w-[12ch] text-[2.35rem] leading-[0.9] font-semibold tracking-[-0.045em] text-[#1d1d1b] sm:text-[3.2rem] lg:text-[4.35rem]">
+                <span className="block">Step Into a World of</span>
+                <span className="block bg-gradient-to-r from-[#2f3a4a] via-[#6c4d35] to-[#f66b05] bg-clip-text text-transparent">
+                  Premium Real Estate
+                </span>
               </h1>
               <p className="mt-3 max-w-xl text-[13px] leading-6 text-[#6e6b66] sm:text-[15px]">
                 From luxury villas to modern apartments, explore handpicked
@@ -103,17 +106,16 @@ export default function Hero() {
 
             <div className="flex flex-col gap-4 lg:items-end lg:pt-3">
               <div className="flex items-center gap-3">
-                {/* <div className="flex -space-x-2">
-                  {["#f1c8ac", "#b98f74", "#d7b8a0"].map((color, index) => (
-                    <span
-                      key={`${color}-${index}`}
-                      className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-[#f8f5ef] text-[10px] font-semibold text-[#2f3a4a]"
-                      style={{ backgroundColor: color }}
-                    >
-                      {index + 1}
-                    </span>
+                <div className="flex -space-x-2">
+                  {["/person1.png", "/person2.png", "/person3.png"].map((src, index) => (
+                    <img
+                      key={`${src}-${index}`}
+                      src={src}
+                      alt={`Trusted client ${index + 1}`}
+                      className="h-9 w-9 rounded-full border-2 border-[#f8f5ef] object-cover"
+                    />
                   ))}
-                </div> */}
+                </div>
                 <p className="text-[14px] font-semibold text-[#2f3a4a]">100+ people trust us.</p>
               </div>
 

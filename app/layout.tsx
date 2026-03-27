@@ -3,6 +3,8 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SmartContactDock from "@/components/common/SmartContactDock";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 const bodyFont = Manrope({
   variable: "--font-body",
@@ -32,7 +34,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        <main className="flex-1">{children}</main>
+        <ScrollToTop />
+        <main className="flex-1">
+          {children}
+          <SmartContactDock />
+        </main>
         <Footer />
       </body>
     </html>
