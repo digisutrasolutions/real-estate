@@ -1,0 +1,35 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9dc7f2"/>
+      <stop offset="100%" stop-color="#dbe9fb"/>
+    </linearGradient>
+    <linearGradient id="lawn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9edb9a"/>
+      <stop offset="100%" stop-color="#7cc888"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#sky)"/>
+  <rect y="520" width="1200" height="280" fill="url(#lawn)"/>
+
+  <rect x="90" y="340" width="360" height="220" fill="#e8eaed"/>
+  <rect x="110" y="310" width="260" height="120" fill="#c9d1d9"/>
+  <rect x="390" y="300" width="280" height="260" fill="#2f3a4a"/>
+  <rect x="670" y="320" width="360" height="240" fill="#f2eee7"/>
+  <rect x="710" y="350" width="130" height="210" fill="#c79b6c"/>
+  <rect x="860" y="350" width="150" height="140" fill="#e0e5eb"/>
+
+  <rect x="140" y="420" width="140" height="100" fill="#b4c1cc"/>
+  <rect x="820" y="420" width="130" height="100" fill="#b7c7d2"/>
+
+  <rect x="0" y="560" width="1200" height="70" fill="#9aa3ad"/>
+  <rect x="0" y="630" width="1200" height="30" fill="#7f8892"/>
+
+  <circle cx="930" cy="130" r="50" fill="#ffffff" opacity="0.85"/>
+  <circle cx="990" cy="140" r="32" fill="#ffffff" opacity="0.7"/>
+
+  <rect x="120" y="520" width="8" height="70" fill="#2f3a4a"/>
+  <circle cx="124" cy="500" r="20" fill="#2f3a4a"/>
+  <rect x="300" y="520" width="8" height="70" fill="#2f3a4a"/>
+  <circle cx="304" cy="500" r="18" fill="#2f3a4a"/>
+</svg>
