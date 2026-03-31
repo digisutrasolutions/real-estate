@@ -1,16 +1,24 @@
-import Link from "next/link";
-import { Menu } from "lucide-react";
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { Menu, MessageCircle } from 'lucide-react';
+import MobileDrawer from './MobileDrawer';
+import ConsultationModal from '../contact/ConsultationModal';
 
 const navigation = [
-  { label: "Buy", href: "/buy" },
-  { label: "Rent", href: "/rent" },
-  { label: "Sell", href: "/sell" },
-  { label: "Developments", href: "/developments" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: 'Buy', href: '/buy' },
+  { label: 'Rent', href: '/rent' },
+  { label: 'Sell', href: '/sell' },
+  { label: 'Developments', href: '/developments' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [consultationModalOpen, setConsultationModalOpen] = useState(false);
+
   return (
     <>
       <div className="relative isolate w-full overflow-hidden bg-gradient-to-r from-[#2c1d14] via-[#7f5d43] to-[#b58c68] text-[#f9eee2]">
@@ -18,22 +26,26 @@ export default function Header() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_35%,rgba(248,213,176,0.2),transparent_42%),radial-gradient(circle_at_88%_50%,rgba(57,34,20,0.24),transparent_45%)]"
         />
-        <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:text-sm">
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-2 text-xs sm:text-sm">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
             <span className="inline-flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#f66b05]" />
-              Trusted real estate advisors in India
+              <span className="h-2 w-2 rounded-full bg-[#f66b05] flex-shrink-0" />
+              <span className="hidden xs:inline truncate">Trusted real estate advisors in India</span>
             </span>
-            <span className="hidden h-4 w-px bg-white/20 sm:inline-block" />
-            <span className="hidden sm:inline">Call +91 9876543210</span>
-            <span className="hidden sm:inline">hello@realsutra.com</span>
+            <span className="hidden sm:inline h-4 w-px bg-white/20" />
+            <span className="md:inline">Call +91 9876543210</span>
+            <span className="md:inline">hello@realsutra.com</span>
           </div>
-          <Link
-            href="/consultation"
-            className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#fff4e8] transition hover:border-[#f66b05] hover:text-[#ffd6b5]"
+          <a
+            href="https://wa.me/919876543210?text=Hi%20RealSutra,%20I%27d%20like%20to%20know%20more%20about%20your%20services"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-white/20 px-2.5 sm:px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#fff4e8] transition hover:bg-white/30 hover:text-white hover:shadow-lg border border-white/40 hover:border-white/60 flex-shrink-0"
+            title="Chat with us on WhatsApp"
           >
-            Schedule a tour
-          </Link>
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Chat on WhatsApp</span>
+          </a>
         </div>
       </div>
 
@@ -69,46 +81,41 @@ export default function Header() {
             >
               List your property
             </Link>
-            <Link
-              href="/consultation"
+            <button
+              onClick={() => setConsultationModalOpen(true)}
               className="rounded-full bg-[#f66b05] px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-[#e65f03]"
             >
               Get consultation
-            </Link>
+            </button>
           </div>
 
-          <details className="relative md:hidden">
-            <summary className="list-none rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700">
-              <span className="flex items-center justify-center" aria-label="Open menu">
-                <Menu className="h-4 w-4" />
-              </span>
-            </summary>
-            <div className="absolute right-0 mt-3 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-lg">
-              <div className="grid gap-3 text-sm font-medium text-slate-700">
-                {navigation.map((item) => (
-                  <Link key={item.label} href={item.href} className="hover:text-slate-950">
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-4 grid gap-2">
-                <Link
-                  href="/list-property"
-                  className="rounded-full border border-slate-300 px-4 py-2 text-center text-sm font-semibold text-slate-700"
-                >
-                  List your property
-                </Link>
-                <Link
-                  href="/consultation"
-                  className="rounded-full bg-[#f66b05] px-4 py-2 text-center text-sm font-semibold text-white"
-                >
-                  Get consultation
-                </Link>
-              </div>
-            </div>
-          </details>
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open menu"
+            className="md:hidden inline-flex items-center justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 transition"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
         </div>
       </header>
+
+      {/* Mobile Drawer */}
+      <MobileDrawer
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        navigation={navigation}
+        onConsultationClick={() => {
+          setMobileMenuOpen(false);
+          setConsultationModalOpen(true);
+        }}
+      />
+
+      {/* Consultation Modal */}
+      <ConsultationModal
+        isOpen={consultationModalOpen}
+        onClose={() => setConsultationModalOpen(false)}
+      />
     </>
   );
 }
