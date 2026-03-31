@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { Menu, MessageCircle } from 'lucide-react';
 import MobileDrawer from './MobileDrawer';
 import ConsultationModal from '../contact/ConsultationModal';
 
@@ -26,22 +26,26 @@ export default function Header() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_35%,rgba(248,213,176,0.2),transparent_42%),radial-gradient(circle_at_88%_50%,rgba(57,34,20,0.24),transparent_45%)]"
         />
-        <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:text-sm">
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-2 text-xs sm:text-sm">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
             <span className="inline-flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#f66b05]" />
-              Trusted real estate advisors in India
+              <span className="h-2 w-2 rounded-full bg-[#f66b05] flex-shrink-0" />
+              <span className="hidden xs:inline truncate">Trusted real estate advisors in India</span>
             </span>
-            <span className="hidden h-4 w-px bg-white/20 sm:inline-block" />
-            <span className="hidden sm:inline">Call +91 9876543210</span>
-            <span className="hidden sm:inline">hello@realsutra.com</span>
+            <span className="hidden sm:inline h-4 w-px bg-white/20" />
+            <span className="md:inline">Call +91 9876543210</span>
+            <span className="md:inline">hello@realsutra.com</span>
           </div>
-          <button
-            onClick={() => setConsultationModalOpen(true)}
-            className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#fff4e8] transition hover:border-[#f66b05] hover:text-[#ffd6b5]"
+          <a
+            href="https://wa.me/919876543210?text=Hi%20RealSutra,%20I%27d%20like%20to%20know%20more%20about%20your%20services"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-white/20 px-2.5 sm:px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#fff4e8] transition hover:bg-white/30 hover:text-white hover:shadow-lg border border-white/40 hover:border-white/60 flex-shrink-0"
+            title="Chat with us on WhatsApp"
           >
-            Schedule a tour
-          </button>
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Chat on WhatsApp</span>
+          </a>
         </div>
       </div>
 
