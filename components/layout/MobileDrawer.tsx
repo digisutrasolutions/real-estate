@@ -113,7 +113,7 @@ export default function MobileDrawer({ isOpen, onClose, navigation, onConsultati
                 <Link
                   href="/list-property"
                   onClick={handleLinkClick}
-                  className="block rounded-full border border-slate-300 px-4 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-900 hover:text-slate-900 hover:bg-slate-50"
+                  className="block w-full rounded-full border border-slate-300 px-4 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-900 hover:text-slate-900 hover:bg-slate-50"
                 >
                   List your property
                 </Link>
