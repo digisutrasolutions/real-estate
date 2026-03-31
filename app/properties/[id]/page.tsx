@@ -1,10 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
 import { propertyService } from '@/utils/propertyService';
 import PropertyDetailClient from '@/components/buy/PropertyDetailClient';
-import { MapPin, Bed, Bath, Ruler, Calendar, DollarSign, ArrowRight } from 'lucide-react';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -51,13 +48,11 @@ export default async function PropertyDetailPage({ params }: Props) {
   const neighborhoods = propertyService.getNeighborhoods(property.city);
 
   return (
-    <>
-      <PropertyDetailClient
-        property={property}
-        similarProperties={similarProperties}
-        allCities={cities}
-        neighborhoods={neighborhoods}
-      />
-    </>
+    <PropertyDetailClient
+      property={property}
+      similarProperties={similarProperties}
+      allCities={cities}
+      neighborhoods={neighborhoods}
+    />
   );
 }

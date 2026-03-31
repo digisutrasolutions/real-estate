@@ -1,7 +1,9 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Home, Users, Zap } from 'lucide-react';
+import { propertyService } from '@/utils/propertyService';
 
 const statVariants = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -13,12 +15,39 @@ const statVariants = {
 };
 
 export default function QuickStatsBanner() {
-  const stats = [
-    { icon: TrendingUp, label: 'Recently Added', value: '42', suffix: 'Properties' },
-    { icon: Users, label: 'Viewing Now', value: '127', suffix: 'Users' },
-    { icon: Home, label: 'Premium Homes', value: '8,500', suffix: 'Listed' },
-    { icon: Zap, label: 'Hot Properties', value: '15', suffix: 'This Week' },
-  ];
+  const stats = useMemo(() => {
+    const all = propertyService.getAllProperties();
+    const recentlyAdded = propertyService.getRecentlyAdded(all.length);
+    const hotProperties = propertyService.getHotProperties(all.length).filter((property) => property.recentViews >= 10);
+    const viewingNow = all.reduce((total, property) => total + property.recentViews, 0);
+
+    return [
+      {
+        icon: TrendingUp,
+        label: 'Recently Added',
+        value: recentlyAdded.length.toLocaleString('en-IN'),
+        suffix: 'Properties',
+      },
+      {
+        icon: Users,
+        label: 'Viewing Activity',
+        value: viewingNow.toLocaleString('en-IN'),
+        suffix: 'Current Views',
+      },
+      {
+        icon: Home,
+        label: 'Total Inventory',
+        value: all.length.toLocaleString('en-IN'),
+        suffix: 'Listed',
+      },
+      {
+        icon: Zap,
+        label: 'Hot Properties',
+        value: hotProperties.length.toLocaleString('en-IN'),
+        suffix: 'Trending Now',
+      },
+    ];
+  }, []);
 
   return (
     <section className="relative py-12 md:py-16 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-y border-slate-200">
@@ -36,11 +65,11 @@ export default function QuickStatsBanner() {
             },
           }}
         >
-          {stats.map((stat, idx) => {
+          {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <motion.div
-                key={idx}
+                key={stat.label}
                 variants={statVariants}
                 className="text-center p-4 rounded-lg hover:bg-white/50 transition"
               >
@@ -50,10 +79,7 @@ export default function QuickStatsBanner() {
                   </div>
                 </div>
                 <p className="text-xs text-slate-600 mb-2">{stat.label}</p>
-                <p className="text-2xl md:text-3xl font-bold text-slate-900">
-                  {stat.value}
-                  <span className="ml-2 text-lg text-[#f66b05]">+</span>
-                </p>
+                <p className="text-2xl md:text-3xl font-bold text-slate-900">{stat.value}</p>
                 <p className="text-xs text-slate-500 mt-2">{stat.suffix}</p>
               </motion.div>
             );

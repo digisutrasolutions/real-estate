@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { Heart, Bed, Bath, Ruler, MapPin, Filter, Grid3x3, List } from 'lucide-react';
-import { propertyService, SearchFilters } from '@/utils/propertyService';
+import { propertyService, SearchFilters, Property } from '@/utils/propertyService';
 
 export default function PropertiesPageContent({
   initialFilters,
@@ -19,25 +19,22 @@ export default function PropertiesPageContent({
   const [likedProperties, setLikedProperties] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
 
-  const results = useMemo(() => {
-    return propertyService.searchProperties(filters);
-  }, [filters]);
+  const results = useMemo(() => propertyService.searchProperties(filters), [filters]);
 
   const handleFilterChange = (key: keyof SearchFilters, value: string) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
 
-    // Update URL
     const params = new URLSearchParams();
-    Object.entries(newFilters).forEach(([k, v]) => {
-      if (v) params.append(k, v);
+    Object.entries(newFilters).forEach(([filterKey, filterValue]) => {
+      if (filterValue) params.append(filterKey, filterValue);
     });
-    router.push(`/properties?${params.toString()}`);
+    router.push(`/properties${params.toString() ? `?${params.toString()}` : ''}`);
   };
 
   const toggleLike = (id: string) => {
     setLikedProperties((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((propertyId) => propertyId !== id) : [...prev, id]
     );
   };
 
@@ -48,7 +45,6 @@ export default function PropertiesPageContent({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -64,7 +60,6 @@ export default function PropertiesPageContent({
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -76,7 +71,7 @@ export default function PropertiesPageContent({
                   <Filter className="h-5 w-5" />
                   Filters
                 </h2>
-                {Object.values(filters).some((v) => v) && (
+                {Object.values(filters).some((value) => value) && (
                   <button
                     onClick={clearFilters}
                     className="text-xs font-semibold text-[#f66b05] hover:text-[#e65f03]"
@@ -87,11 +82,8 @@ export default function PropertiesPageContent({
               </div>
 
               <div className="space-y-6">
-                {/* Search Location */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
-                    Location/City
-                  </label>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Location/City</label>
                   <input
                     type="text"
                     placeholder="Search location..."
@@ -101,29 +93,23 @@ export default function PropertiesPageContent({
                   />
                 </div>
 
-                {/* Price Range */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
-                    Budget
-                  </label>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Budget</label>
                   <select
                     value={filters.priceRange || ''}
                     onChange={(e) => handleFilterChange('priceRange', e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:border-[#f66b05] focus:ring-2 focus:ring-[#f66b05]/20 outline-none transition"
                   >
                     <option value="">All Prices</option>
-                    <option value="0-50">₹0 - ₹50L</option>
-                    <option value="50-150">₹50L - ₹1.5Cr</option>
-                    <option value="150-300">₹1.5Cr - ₹3Cr</option>
-                    <option value="300+">₹3Cr+</option>
+                    <option value="0-50">Rs 0 - Rs 50 L</option>
+                    <option value="50-150">Rs 50 L - Rs 1.5 Cr</option>
+                    <option value="150-300">Rs 1.5 Cr - Rs 3 Cr</option>
+                    <option value="300+">Rs 3 Cr+</option>
                   </select>
                 </div>
 
-                {/* Property Type */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
-                    Property Type
-                  </label>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Property Type</label>
                   <select
                     value={filters.propertyType || ''}
                     onChange={(e) => handleFilterChange('propertyType', e.target.value)}
@@ -138,11 +124,8 @@ export default function PropertiesPageContent({
                   </select>
                 </div>
 
-                {/* Bedrooms */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
-                    Bedrooms
-                  </label>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Bedrooms</label>
                   <select
                     value={filters.bedrooms || ''}
                     onChange={(e) => handleFilterChange('bedrooms', e.target.value)}
@@ -159,9 +142,7 @@ export default function PropertiesPageContent({
             </div>
           </motion.div>
 
-          {/* Properties Grid/List */}
           <motion.div className="lg:col-span-3">
-            {/* View Mode Toggle */}
             <div className="flex items-center justify-between mb-6">
               <motion.div className="flex gap-2">
                 <button
@@ -195,13 +176,8 @@ export default function PropertiesPageContent({
               </button>
             </div>
 
-            {/* No Results */}
             {results.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center py-16"
-              >
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-16">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">No properties found</h3>
                 <p className="text-slate-600 mb-6">Try adjusting your search filters</p>
                 <button
@@ -213,13 +189,8 @@ export default function PropertiesPageContent({
               </motion.div>
             ) : (
               <>
-                {/* Grid View */}
                 {viewMode === 'grid' && (
-                  <motion.div
-                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
+                  <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     {results.map((property) => (
                       <PropertyCard
                         key={property.id}
@@ -231,13 +202,8 @@ export default function PropertiesPageContent({
                   </motion.div>
                 )}
 
-                {/* List View */}
                 {viewMode === 'list' && (
-                  <motion.div
-                    className="space-y-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
+                  <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     {results.map((property) => (
                       <PropertyListItem
                         key={property.id}
@@ -257,37 +223,25 @@ export default function PropertiesPageContent({
   );
 }
 
-// Property Card Component
 function PropertyCard({
   property,
   isLiked,
   onLike,
 }: {
-  property: any;
+  property: Property;
   isLiked: boolean;
   onLike: () => void;
 }) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#f66b05] hover:shadow-lg transition"
-    >
+    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#f66b05] hover:shadow-lg transition">
       <div className="relative h-64 overflow-hidden group">
-        <Image
-          src={property.image}
-          alt={property.title}
-          fill
-          className="object-cover group-hover:scale-110 transition duration-500"
-        />
+        <Image src={property.image} alt={property.title} fill className="object-cover group-hover:scale-110 transition duration-500" />
         {property.featured && (
           <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-gradient-to-r from-[#f66b05] to-[#e65f03] text-white text-xs font-bold">
             Featured
           </div>
         )}
-        <button
-          onClick={onLike}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition"
-        >
+        <button onClick={onLike} className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition" aria-label={`Like ${property.title}`}>
           <Heart className={`h-5 w-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-slate-600'}`} />
         </button>
       </div>
@@ -299,9 +253,7 @@ function PropertyCard({
           {property.location}
         </p>
 
-        <p className="text-2xl font-bold text-[#f66b05] mb-4">
-          {propertyService.formatPrice(property.price)}
-        </p>
+        <p className="text-2xl font-bold text-[#f66b05] mb-4">{propertyService.formatPrice(property.price)}</p>
 
         <div className="grid grid-cols-3 gap-3 py-4 border-y border-slate-200 mb-4">
           <div className="text-center">
@@ -321,9 +273,9 @@ function PropertyCard({
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 text-slate-900 font-semibold mb-1">
               <Ruler className="h-4 w-4" />
-              {(property.area / 100).toFixed(0)}K
+              {propertyService.formatArea(property.area)}
             </div>
-            <p className="text-xs text-slate-600">Sq.ft</p>
+            <p className="text-xs text-slate-600">Area</p>
           </div>
         </div>
 
@@ -337,28 +289,19 @@ function PropertyCard({
   );
 }
 
-// Property List Item Component
 function PropertyListItem({
   property,
   isLiked,
   onLike,
 }: {
-  property: any;
+  property: Property;
   isLiked: boolean;
   onLike: () => void;
 }) {
   return (
-    <motion.div
-      whileHover={{ x: 5 }}
-      className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#f66b05] hover:shadow-lg transition flex gap-6 p-6"
-    >
+    <motion.div whileHover={{ x: 5 }} className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#f66b05] hover:shadow-lg transition flex gap-6 p-6">
       <div className="relative h-48 w-48 flex-shrink-0 rounded-lg overflow-hidden group">
-        <Image
-          src={property.image}
-          alt={property.title}
-          fill
-          className="object-cover group-hover:scale-110 transition duration-500"
-        />
+        <Image src={property.image} alt={property.title} fill className="object-cover group-hover:scale-110 transition duration-500" />
       </div>
 
       <div className="flex-1">
@@ -370,17 +313,12 @@ function PropertyListItem({
               {property.location}
             </p>
           </div>
-          <button
-            onClick={onLike}
-            className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition"
-          >
+          <button onClick={onLike} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition" aria-label={`Like ${property.title}`}>
             <Heart className={`h-5 w-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-slate-600'}`} />
           </button>
         </div>
 
-        <p className="text-2xl font-bold text-[#f66b05] mb-4">
-          {propertyService.formatPrice(property.price)}
-        </p>
+        <p className="text-2xl font-bold text-[#f66b05] mb-4">{propertyService.formatPrice(property.price)}</p>
 
         <div className="flex flex-wrap gap-6 py-4 border-y border-slate-200 mb-4">
           <div className="flex items-center gap-2 text-slate-700">
@@ -399,7 +337,7 @@ function PropertyListItem({
 
         <Link href={`/properties/${property.id}`}>
           <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#f66b05] to-[#e65f03] text-white font-semibold hover:shadow-lg transition">
-            View Details →
+            View Details
           </button>
         </Link>
       </div>

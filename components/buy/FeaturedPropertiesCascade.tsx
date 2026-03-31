@@ -1,11 +1,11 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Heart, Eye, Users, Clock, Bed, Bath, Ruler, ArrowRight } from 'lucide-react';
+import { Heart, Eye, Clock, Bed, Bath, Ruler, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
-import { propertyService, Property } from '@/utils/propertyService';
+import { propertyService } from '@/utils/propertyService';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,13 +34,13 @@ export default function FeaturedPropertiesCascade() {
 
   const toggleSelect = (id: string) => {
     setSelectedProperties((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((propertyId) => propertyId !== id) : [...prev, id]
     );
   };
 
   const toggleLike = (id: string) => {
     setLikedProperties((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((propertyId) => propertyId !== id) : [...prev, id]
     );
   };
 
@@ -58,7 +58,7 @@ export default function FeaturedPropertiesCascade() {
             Featured Properties
           </motion.h2>
           <motion.p variants={itemVariants} className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Our handpicked selection of premium properties with live viewer activity
+            Handpicked listings from our live inventory with real-time engagement data
           </motion.p>
         </motion.div>
 
@@ -69,7 +69,7 @@ export default function FeaturedPropertiesCascade() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {featuredProperties.map((property, idx) => (
+          {featuredProperties.map((property) => (
             <motion.div
               key={property.id}
               variants={itemVariants}
@@ -88,7 +88,6 @@ export default function FeaturedPropertiesCascade() {
                   className="w-full h-96 object-cover group-hover:scale-110 transition duration-500"
                 />
 
-                {/* Badges */}
                 <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 items-start justify-between">
                   {property.featured && (
                     <motion.div
@@ -96,7 +95,7 @@ export default function FeaturedPropertiesCascade() {
                       animate={{ scale: 1 }}
                       className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#f66b05] to-[#e65f03] text-white text-xs font-bold"
                     >
-                      ⭐ Featured
+                      Featured
                     </motion.div>
                   )}
                   <motion.button
@@ -104,6 +103,7 @@ export default function FeaturedPropertiesCascade() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => toggleLike(property.id)}
                     className="p-2.5 rounded-full bg-white/90 hover:bg-white shadow-lg transition"
+                    aria-label={`Like ${property.title}`}
                   >
                     <Heart
                       className={`h-5 w-5 ${
@@ -115,7 +115,6 @@ export default function FeaturedPropertiesCascade() {
                   </motion.button>
                 </div>
 
-                {/* Urgency Indicator */}
                 <motion.div
                   initial={{ x: -100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -135,10 +134,8 @@ export default function FeaturedPropertiesCascade() {
 
               <div className="p-6">
                 <div className="mb-4">
-                  <p className="text-sm text-slate-600 mb-2">📍 {property.location}</p>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2">
-                    {property.title}
-                  </h3>
+                  <p className="text-sm text-slate-600 mb-2">{property.location}</p>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2">{property.title}</h3>
                   <p className="text-2xl font-bold text-[#f66b05]">{propertyService.formatPrice(property.price)}</p>
                 </div>
 
@@ -170,50 +167,50 @@ export default function FeaturedPropertiesCascade() {
                   <p className="text-sm text-slate-600">
                     <span className="font-semibold">Agent:</span> {property.agent}
                   </p>
-                  <Link
-                    href={`/properties/${property.id}`}
-                    className="block"
-                  >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <motion.button
+                      type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 ${
+                      onClick={() => toggleSelect(property.id)}
+                      className={`py-3 rounded-lg font-semibold transition ${
                         selectedProperties.includes(property.id)
                           ? 'bg-[#f66b05] text-white'
                           : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
                       }`}
                     >
-                      {selectedProperties.includes(property.id) ? (
-                        '✓ Selected'
-                      ) : (
-                        <>
-                          View Details <ArrowRight className="h-4 w-4" />
-                        </>
-                      )}
+                      {selectedProperties.includes(property.id) ? 'Selected' : 'Select'}
                     </motion.button>
-                  </Link>
+
+                    <Link href={`/properties/${property.id}`} className="block">
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full py-3 rounded-lg font-semibold transition bg-[#f66b05]/10 text-[#f66b05] hover:bg-[#f66b05] hover:text-white flex items-center justify-center gap-2"
+                      >
+                        View Details <ArrowRight className="h-4 w-4" />
+                      </motion.button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Comparison Tool */}
         {selectedProperties.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="sticky bottom-6 left-0 right-0 mx-auto w-fit px-6 py-4 rounded-full bg-gradient-to-r from-[#f66b05] to-[#e65f03] text-white shadow-2xl flex items-center gap-4"
           >
-            <span className="font-semibold">
-              {selectedProperties.length} properties selected
-            </span>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="px-6 py-2 rounded-full bg-white text-[#f66b05] font-bold hover:shadow-lg transition"
-            >
-              Compare Properties →
-            </motion.button>
+            <span className="font-semibold">{selectedProperties.length} properties selected</span>
+            <Link href="/properties">
+              <motion.span whileHover={{ scale: 1.05 }} className="inline-block px-6 py-2 rounded-full bg-white text-[#f66b05] font-bold hover:shadow-lg transition">
+                Compare Properties
+              </motion.span>
+            </Link>
           </motion.div>
         )}
       </div>

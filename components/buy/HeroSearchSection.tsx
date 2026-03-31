@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Search, MapPin, DollarSign, Home, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { propertyService } from '@/utils/propertyService';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,25 +36,22 @@ export default function HeroSearchSection() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Build query params
+
     const params = new URLSearchParams();
     if (searchParams.location) params.append('location', searchParams.location);
     if (searchParams.priceRange) params.append('priceRange', searchParams.priceRange);
     if (searchParams.propertyType) params.append('propertyType', searchParams.propertyType);
     if (searchParams.bedrooms) params.append('bedrooms', searchParams.bedrooms);
-    
+
     router.push(`/properties?${params.toString()}`);
   };
 
   return (
     <section className="relative overflow-hidden pt-12 pb-20 md:pt-24 md:pb-32">
-      {/* Background with gradient overlay */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(246,107,5,0.15),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(44,29,20,0.2),transparent_50%)]" />
-        
-        {/* Animated blobs */}
+
         <motion.div
           className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-[#f66b05]/20 blur-3xl"
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -89,7 +85,6 @@ export default function HeroSearchSection() {
           </motion.p>
         </motion.div>
 
-        {/* Search Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,11 +93,8 @@ export default function HeroSearchSection() {
         >
           <form onSubmit={handleSearch}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              {/* Location */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Location
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Location</label>
                 <div className="flex items-center gap-2 px-4 py-3 border border-slate-300 rounded-lg focus-within:border-[#f66b05] focus-within:ring-2 focus-within:ring-[#f66b05]/20 transition">
                   <MapPin className="h-5 w-5 text-slate-400" />
                   <input
@@ -115,11 +107,8 @@ export default function HeroSearchSection() {
                 </div>
               </div>
 
-              {/* Price Range */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Budget
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Budget</label>
                 <div className="flex items-center gap-2 px-4 py-3 border border-slate-300 rounded-lg focus-within:border-[#f66b05] focus-within:ring-2 focus-within:ring-[#f66b05]/20 transition">
                   <DollarSign className="h-5 w-5 text-slate-400" />
                   <select
@@ -128,19 +117,16 @@ export default function HeroSearchSection() {
                     className="w-full outline-none bg-transparent text-slate-900"
                   >
                     <option value="">Any Price</option>
-                    <option value="0-50">₹0 - ₹50L</option>
-                    <option value="50-150">₹50L - ₹1.5Cr</option>
-                    <option value="150-300">₹1.5Cr - ₹3Cr</option>
-                    <option value="300+">₹3Cr+</option>
+                    <option value="0-50">Rs 0 - Rs 50 L</option>
+                    <option value="50-150">Rs 50 L - Rs 1.5 Cr</option>
+                    <option value="150-300">Rs 1.5 Cr - Rs 3 Cr</option>
+                    <option value="300+">Rs 3 Cr+</option>
                   </select>
                 </div>
               </div>
 
-              {/* Property Type */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Property Type
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Property Type</label>
                 <div className="flex items-center gap-2 px-4 py-3 border border-slate-300 rounded-lg focus-within:border-[#f66b05] focus-within:ring-2 focus-within:ring-[#f66b05]/20 transition">
                   <Home className="h-5 w-5 text-slate-400" />
                   <select
@@ -151,17 +137,15 @@ export default function HeroSearchSection() {
                     <option value="">Any Type</option>
                     <option value="apartment">Apartment</option>
                     <option value="villa">Villa</option>
-                    <option value="bungloww">Bungalow</option>
+                    <option value="bungalow">Bungalow</option>
                     <option value="commercial">Commercial</option>
+                    <option value="plot">Plot</option>
                   </select>
                 </div>
               </div>
 
-              {/* Bedrooms */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Bedrooms
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Bedrooms</label>
                 <div className="flex items-center gap-2 px-4 py-3 border border-slate-300 rounded-lg focus-within:border-[#f66b05] focus-within:ring-2 focus-within:ring-[#f66b05]/20 transition">
                   <Users className="h-5 w-5 text-slate-400" />
                   <select
@@ -191,7 +175,6 @@ export default function HeroSearchSection() {
           </form>
         </motion.div>
 
-        {/* Quick suggestions */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -199,9 +182,11 @@ export default function HeroSearchSection() {
           className="flex flex-wrap gap-3 justify-center"
         >
           <span className="text-slate-400 text-sm">Popular searches:</span>
-          {['Apartments in Bangalore', 'Villas in Mumbai', 'Luxury in Delhi', '3BHK Near Metro'].map((suggestion, idx) => (
+          {['Apartments in Bangalore', 'Villas in Mumbai', 'Luxury in Delhi', '3BHK Near Metro'].map((suggestion) => (
             <button
-              key={idx}
+              key={suggestion}
+              type="button"
+              onClick={() => setSearchParams((prev) => ({ ...prev, location: suggestion }))}
               className="px-4 py-2 rounded-full bg-white/10 text-slate-300 hover:bg-white/20 transition text-sm border border-white/20"
             >
               {suggestion}

@@ -30,10 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-const buyingFeatures = [];
-const buyingProcess = [];
-const featuredProperties = [];
-const buyingStats = [];
 const testimonials = [
   {
     id: '1',
